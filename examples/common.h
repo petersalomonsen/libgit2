@@ -59,6 +59,7 @@ extern int lg2_blame(git_repository *repo, int argc, char **argv);
 extern int lg2_cat_file(git_repository *repo, int argc, char **argv);
 extern int lg2_checkout(git_repository *repo, int argc, char **argv);
 extern int lg2_clone(git_repository *repo, int argc, char **argv);
+extern int lg2_commit(git_repository *repo, int argc, char **argv);
 extern int lg2_config(git_repository *repo, int argc, char **argv);
 extern int lg2_describe(git_repository *repo, int argc, char **argv);
 extern int lg2_diff(git_repository *repo, int argc, char **argv);
