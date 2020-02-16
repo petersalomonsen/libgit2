@@ -43,11 +43,23 @@ if(ENVIRONMENT_IS_WORKER) {
             return httpConnectionNo++;
         },
         emscriptenhttpwrite: function(connectionNo, buffer, length) {
-            const xhr = emscriptenhttpconnections[connectionNo].xhr;
-            xhr.send(new Uint8Array(Module.HEAPU8.buffer,buffer,length));
+            const connection = emscriptenhttpconnections[connectionNo];
+            const buf = new Uint8Array(Module.HEAPU8.buffer,buffer,length).slice(0);
+            if(!connection.content) {
+                connection.content = buf;
+            } else {
+                const content = new Uint8Array(connection.content.length + buf.length);
+                content.set(connection.content);
+                content.set(buf, connection.content.length);
+                connection.content = content;
+            }            
         },
         emscriptenhttpread: function(connectionNo, buffer, buffersize) { 
             const connection = emscriptenhttpconnections[connectionNo];
+            if(connection.content) {
+                connection.xhr.send(connection.content.buffer);
+                connection.content = null;
+            }
             let bytes_read = connection.xhr.response.byteLength - connection.resultbufferpointer;
             if (bytes_read > buffersize) {
                 bytes_read = buffersize;
@@ -81,7 +93,8 @@ if(ENVIRONMENT_IS_WORKER) {
 
             new Worker('(' + (function requestWorker() {
                 const { workerData } = require('worker_threads');
-                const req = require('https').request(workerData.url, {
+                const req = require(workerData.url.indexOf('https') === 0 ? 'https' : 'http')
+                              .request(workerData.url, {
                     headers: workerData.headers,
                     method: workerData.method
                 }, (res) => {

@@ -55,7 +55,9 @@ static int emscriptenhttp_stream_write_single(
 		s->connectionNo = EM_ASM_INT({
 			const url = UTF8ToString($0);
 			return Module.emscriptenhttpconnect(url, $1, 'POST', {
-				'Content-Type': 'application/x-git-upload-pack-request'
+				'Content-Type': url.indexOf('git-upload-pack') > 0 ? 
+					'application/x-git-upload-pack-request' :
+					'application/x-git-receive-pack-request'
 			});
 		}, s->service_url, DEFAULT_BUFSIZE);
 	}

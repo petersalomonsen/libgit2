@@ -1,5 +1,5 @@
 /*
- * libgit2 "log" example - shows how to walk history and get commit info
+ * libgit2 "commit" example - shows how to create a git commit
  *
  * Written by the libgit2 contributors
  *
@@ -13,7 +13,6 @@
  */
 
 #include "common.h"
-#include "git2/clone.h"
 
 /**
  * This example demonstrates the libgit2 commit APIs to roughly
