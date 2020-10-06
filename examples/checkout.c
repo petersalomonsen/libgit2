@@ -272,8 +272,6 @@ int lg2_checkout(git_repository *repo, int argc, char **argv)
 		git_checkout_options copts = GIT_CHECKOUT_OPTIONS_INIT;
 		git_strarray paths;
 
-		copts.checkout_strategy = GIT_CHECKOUT_FORCE;
-
 		paths.count = args.argc - args.pos;
 		
 		if (paths.count == 0) {
